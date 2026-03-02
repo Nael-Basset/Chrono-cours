@@ -57,12 +57,28 @@ export default function App() {
   };
   
   useEffect(() => {
-    // Set default times on mount
+    // Set default times on mount based on predefined slots
     const current = new Date();
-    const start = `${current.getHours().toString().padStart(2, '0')}:${current.getMinutes().toString().padStart(2, '0')}`;
+    const nowMinutes = current.getHours() * 60 + current.getMinutes();
     
-    const endDate = new Date(current.getTime() + 60 * 60 * 1000);
-    const end = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
+    let start = '08:15';
+    let end = '09:45';
+    
+    if (nowMinutes <= 585) { // Before 09:45
+      start = '08:15'; end = '09:45';
+    } else if (nowMinutes <= 690) { // Before 11:30
+      start = '10:00'; end = '11:30';
+    } else if (nowMinutes <= 769) { // Before 12:49
+      start = '11:30'; end = '13:00';
+    } else if (nowMinutes <= 870) { // Before 14:30 (includes 12:50-13:00 rule)
+      start = '13:00'; end = '14:30';
+    } else if (nowMinutes <= 975) { // Before 16:15
+      start = '14:45'; end = '16:15';
+    } else if (nowMinutes <= 1080) { // Before 18:00
+      start = '16:30'; end = '18:00';
+    } else {
+      start = '08:15'; end = '09:45';
+    }
     
     setStartTimeStr(start);
     setEndTimeStr(end);
