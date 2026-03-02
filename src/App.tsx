@@ -173,20 +173,20 @@ export default function App() {
         {/* Main Card */}
         <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto relative">
           {/* Controls: Dark Mode & Fullscreen */}
-          <div className="absolute top-4 right-4 flex gap-2 z-10">
+          <div className="absolute top-2 right-2 md:top-4 md:right-4 flex gap-1.5 md:gap-2 z-10">
             <button
               onClick={toggleFullscreen}
-              className="md:hidden p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
+              className="md:hidden p-1.5 md:p-2 rounded-lg md:rounded-xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
               title="Mode plein écran"
             >
-              {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+              {isFullscreen ? <Minimize size={14} className="md:w-[18px] md:h-[18px]" /> : <Maximize size={14} className="md:w-[18px] md:h-[18px]" />}
             </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
+              className="p-1.5 md:p-2 rounded-lg md:rounded-xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
               title="Changer le thème"
             >
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+              {isDarkMode ? <Sun size={14} className="md:w-[18px] md:h-[18px]" /> : <Moon size={14} className="md:w-[18px] md:h-[18px]" />}
             </button>
           </div>
 
