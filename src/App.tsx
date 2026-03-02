@@ -171,7 +171,7 @@ export default function App() {
     <div className="h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100 overflow-hidden flex flex-col items-center justify-center p-4 md:p-12 transition-colors duration-300">
       <div className="flex flex-col landscape:flex-row md:flex-row gap-6 md:gap-16 items-stretch justify-center w-full h-full max-w-[1400px] mx-auto">
         {/* Main Card */}
-        <div className="flex-1 max-w-md md:max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto relative flex flex-col justify-center">
+        <div className="flex-1 max-w-md md:max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto no-scrollbar relative flex flex-col justify-center">
           {/* Controls: Dark Mode & Fullscreen */}
           <div className="absolute top-2 right-2 md:top-6 md:right-6 flex gap-1.5 md:gap-3 z-10">
             <button
@@ -329,7 +329,7 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="flex-1 bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-12 flex flex-col gap-4 md:gap-10 w-full max-w-md md:max-w-3xl h-full max-h-[500px] md:max-h-full overflow-hidden"
+              className="flex-1 bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-12 flex flex-col gap-4 md:gap-10 w-full max-w-md md:max-w-3xl h-full max-h-[500px] md:max-h-full overflow-y-auto no-scrollbar"
             >
               <div className="flex flex-col gap-4 md:gap-10 h-full justify-center">
                 {chunkedBars.map((row, rowIndex) => (
