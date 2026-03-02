@@ -134,9 +134,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4 font-sans text-zinc-900">
-      <div className="flex flex-col md:flex-row gap-6 items-stretch w-full max-w-5xl justify-center">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-zinc-200/50 overflow-hidden border border-zinc-100 shrink-0">
+    <div className="min-h-screen bg-zinc-50 py-8 px-4 font-sans text-zinc-900 overflow-y-auto">
+      <div className="flex flex-col md:flex-row gap-8 items-start w-full max-w-5xl mx-auto justify-center">
+        {/* Main Card */}
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-zinc-200/50 overflow-hidden border border-zinc-100 shrink-0">
           <div className="p-8">
             <div className="flex items-center justify-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
@@ -270,28 +271,28 @@ export default function App() {
           </div>
         </div>
 
+        {/* Progress Bars Section */}
         <AnimatePresence>
           {isRunning && numBars > 0 && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-8 flex flex-col gap-6 w-full max-w-md overflow-y-auto"
+              className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-8 flex flex-col gap-8 w-full max-w-md overflow-visible"
             >
               {chunkedBars.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex gap-4 items-end flex-1 min-h-[120px]">
+                <div key={rowIndex} className="flex gap-3 items-end h-32 w-full">
                   {row.map((bar) => (
                     bar.isPlaceholder ? (
-                      <div key={bar.id} className="flex-1 shrink-0" />
+                      <div key={bar.id} className="flex-1" />
                     ) : (
                       <div 
                         key={bar.id} 
-                        className="flex-1 bg-zinc-100 rounded-full overflow-hidden relative flex flex-col justify-end shrink-0"
-                        style={{ height: `${bar.heightPercentage}%` }}
+                        className="flex-1 bg-zinc-100 rounded-full overflow-hidden relative flex flex-col justify-end h-full"
                         title={`Quart d'heure ${Number(bar.id) + 1}`}
                       >
                         <div 
-                          className={`w-full transition-all duration-300 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                          className={`w-full transition-all duration-500 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500'}`}
                           style={{ height: `${bar.fillPercentage}%` }}
                         />
                       </div>
