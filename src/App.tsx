@@ -169,27 +169,27 @@ export default function App() {
 
   return (
     <div className="h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100 overflow-hidden flex flex-col items-center justify-center p-4 md:p-8 transition-colors duration-300">
-      {/* Controls: Dark Mode & Fullscreen */}
-      <div className="fixed top-4 right-4 flex gap-2 z-50">
-        <button
-          onClick={toggleFullscreen}
-          className="md:hidden p-3 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all"
-          title="Mode plein écran"
-        >
-          {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
-        </button>
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-3 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all"
-          title="Changer le thème"
-        >
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
-      </div>
-
       <div className="flex flex-col landscape:flex-row md:flex-row gap-6 md:gap-12 items-center justify-center w-full h-full max-w-6xl mx-auto">
         {/* Main Card */}
-        <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto">
+        <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto relative">
+          {/* Controls: Dark Mode & Fullscreen */}
+          <div className="absolute top-4 right-4 flex gap-2 z-10">
+            <button
+              onClick={toggleFullscreen}
+              className="md:hidden p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
+              title="Mode plein écran"
+            >
+              {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+            </button>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
+              title="Changer le thème"
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
+
           <div className="p-6 md:p-8">
             <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
               <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
