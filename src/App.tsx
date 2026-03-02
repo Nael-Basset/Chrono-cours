@@ -302,7 +302,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
     </div>
-  );
+  </div>
+);
 }
