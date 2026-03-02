@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, Clock, Settings2, CheckCircle2 } from 'lucide-react';
+import { Play, Clock, Settings2, CheckCircle2, Moon, Sun, Maximize, Minimize } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 function formatTime(ms: number) {
@@ -21,6 +21,40 @@ export default function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [now, setNow] = useState(new Date());
   const [precisionMode, setPrecisionMode] = useState(0); // 0: 1 decimal, 1: 2 decimals, 2: dynamic
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
   
   useEffect(() => {
     // Set default times on mount
@@ -134,13 +168,31 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen bg-zinc-50 font-sans text-zinc-900 overflow-hidden flex items-center justify-center p-4 md:p-8">
+    <div className="h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100 overflow-hidden flex flex-col items-center justify-center p-4 md:p-8 transition-colors duration-300">
+      {/* Controls: Dark Mode & Fullscreen */}
+      <div className="fixed top-4 right-4 flex gap-2 z-50">
+        <button
+          onClick={toggleFullscreen}
+          className="md:hidden p-3 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all"
+          title="Mode plein écran"
+        >
+          {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+        </button>
+        <button
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="p-3 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all"
+          title="Changer le thème"
+        >
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+      </div>
+
       <div className="flex flex-col landscape:flex-row md:flex-row gap-6 md:gap-12 items-center justify-center w-full h-full max-w-6xl mx-auto">
         {/* Main Card */}
-        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-zinc-200/50 overflow-hidden border border-zinc-100 shrink-0 landscape:max-h-full landscape:overflow-y-auto">
+        <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto">
           <div className="p-6 md:p-8">
             <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
-              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+              <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                 <Clock size={24} />
               </div>
               <h1 className="text-xl md:text-2xl font-semibold tracking-tight">Chrono Cours</h1>
@@ -158,29 +210,29 @@ export default function App() {
                 >
                   <div className="space-y-4 md:space-y-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Heure de début</label>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Heure de début</label>
                       <input 
                         type="time" 
                         value={startTimeStr}
                         onChange={(e) => setStartTimeStr(e.target.value)}
-                        className="w-full text-3xl md:text-4xl font-light tracking-tight border-b-2 border-zinc-100 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
+                        className="w-full text-3xl md:text-4xl font-light tracking-tight border-b-2 border-zinc-100 dark:border-zinc-800 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
                       />
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Heure de fin</label>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Heure de fin</label>
                       <input 
                         type="time" 
                         value={endTimeStr}
                         onChange={(e) => setEndTimeStr(e.target.value)}
-                        className="w-full text-3xl md:text-4xl font-light tracking-tight border-b-2 border-zinc-100 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
+                        className="w-full text-3xl md:text-4xl font-light tracking-tight border-b-2 border-zinc-100 dark:border-zinc-800 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
                       />
                     </div>
                   </div>
 
                   <button 
                     onClick={handleStart}
-                    className="w-full py-3 md:py-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-2xl font-medium text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98] mt-4 md:mt-8"
+                    className="w-full py-3 md:py-4 bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white rounded-2xl font-medium text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98] mt-4 md:mt-8"
                   >
                     <Play size={20} fill="currentColor" />
                     Démarrer
@@ -205,7 +257,7 @@ export default function App() {
                         stroke="currentColor"
                         strokeWidth="8"
                         fill="transparent"
-                        className="text-zinc-100"
+                        className="text-zinc-100 dark:text-zinc-800"
                       />
                       {/* Progress Circle */}
                       <circle
@@ -218,24 +270,24 @@ export default function App() {
                         strokeDasharray="283%"
                         strokeDashoffset={`${283 - (progress * 2.83)}%`}
                         strokeLinecap="round"
-                        className={`transition-all duration-300 ease-out ${isFinished ? 'text-emerald-500' : 'text-indigo-600'}`}
+                        className={`transition-all duration-300 ease-out ${isFinished ? 'text-emerald-500' : 'text-indigo-600 dark:text-indigo-400'}`}
                       />
                     </svg>
                     
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                      <span className="text-[10px] md:text-xs font-medium text-zinc-400 uppercase tracking-widest mb-1">
+                      <span className="text-[10px] md:text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">
                         {isFinished ? 'Terminé' : 'Restant'}
                       </span>
                       {isFinished ? (
                         <CheckCircle2 className="w-10 h-10 md:w-16 md:h-16 text-emerald-500 my-1 md:my-2" />
                       ) : (
-                        <span className="text-3xl md:text-5xl font-light tracking-tighter text-zinc-900 tabular-nums">
+                        <span className="text-3xl md:text-5xl font-light tracking-tighter text-zinc-900 dark:text-zinc-100 tabular-nums">
                           {formatTime(remainingMs)}
                         </span>
                       )}
                       <button 
                         onClick={() => setPrecisionMode((prev) => (prev + 1) % 3)}
-                        className="text-sm md:text-lg font-medium text-zinc-500 mt-1 md:mt-2 hover:text-zinc-700 transition-colors cursor-pointer select-none"
+                        className="text-sm md:text-lg font-medium text-zinc-500 dark:text-zinc-400 mt-1 md:mt-2 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors cursor-pointer select-none"
                       >
                         {precisionMode === 0 
                           ? progress.toFixed(1) 
@@ -247,19 +299,19 @@ export default function App() {
                   </div>
 
                   <div className="w-full flex gap-3 md:gap-4">
-                    <div className="flex-1 bg-zinc-50 rounded-xl md:rounded-2xl p-3 md:p-4 text-center border border-zinc-100">
-                      <div className="text-[10px] md:text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Début</div>
-                      <div className="text-lg md:text-xl font-medium text-zinc-700">{startTimeStr}</div>
+                    <div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl md:rounded-2xl p-3 md:p-4 text-center border border-zinc-100 dark:border-zinc-800">
+                      <div className="text-[10px] md:text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Début</div>
+                      <div className="text-lg md:text-xl font-medium text-zinc-700 dark:text-zinc-300">{startTimeStr}</div>
                     </div>
-                    <div className="flex-1 bg-zinc-50 rounded-xl md:rounded-2xl p-3 md:p-4 text-center border border-zinc-100">
-                      <div className="text-[10px] md:text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Fin</div>
-                      <div className="text-lg md:text-xl font-medium text-zinc-700">{endTimeStr}</div>
+                    <div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl md:rounded-2xl p-3 md:p-4 text-center border border-zinc-100 dark:border-zinc-800">
+                      <div className="text-[10px] md:text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Fin</div>
+                      <div className="text-lg md:text-xl font-medium text-zinc-700 dark:text-zinc-300">{endTimeStr}</div>
                     </div>
                   </div>
 
                   <button 
                     onClick={handleStop}
-                    className="mt-6 md:mt-8 w-full py-3 md:py-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 rounded-xl md:rounded-2xl font-medium text-base md:text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                    className="mt-6 md:mt-8 w-full py-3 md:py-4 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-xl md:rounded-2xl font-medium text-base md:text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
                   >
                     <Settings2 size={18} />
                     Modifier
@@ -277,7 +329,7 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-6 md:p-8 flex flex-col gap-4 md:gap-6 w-full max-w-md h-full max-h-[500px] md:max-h-full overflow-hidden"
+              className="bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-8 flex flex-col gap-4 md:gap-6 w-full max-w-md h-full max-h-[500px] md:max-h-full overflow-hidden"
             >
               <div className="flex flex-col gap-4 md:gap-6 h-full justify-center">
                 {chunkedBars.map((row, rowIndex) => (
@@ -288,11 +340,11 @@ export default function App() {
                       ) : (
                         <div 
                           key={bar.id} 
-                          className="flex-1 bg-zinc-100 rounded-full overflow-hidden relative flex flex-col justify-end h-full"
+                          className="flex-1 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden relative flex flex-col justify-end h-full"
                           title={`Quart d'heure ${Number(bar.id) + 1}`}
                         >
                           <div 
-                            className={`w-full transition-all duration-500 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                            className={`w-full transition-all duration-500 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500 dark:bg-indigo-400'}`}
                             style={{ height: `${bar.fillPercentage}%` }}
                           />
                         </div>
