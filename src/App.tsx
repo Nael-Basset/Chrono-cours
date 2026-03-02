@@ -273,10 +273,10 @@ export default function App() {
         <AnimatePresence>
           {isRunning && numBars > 0 && (
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-8 flex flex-col gap-6 w-full max-w-md shrink-0 overflow-y-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-8 flex flex-col gap-6 w-full max-w-md overflow-y-auto"
             >
               {chunkedBars.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex gap-4 items-end flex-1 min-h-[120px]">
