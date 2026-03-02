@@ -1,0 +1,5 @@
+{
+  "name": "Chrono Cours",
+  "description": "Un outil pour afficher le temps restant et le pourcentage de réalisation d'un cours.",
+  "requestFramePermissions": []
+}
