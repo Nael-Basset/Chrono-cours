@@ -138,171 +138,171 @@ export default function App() {
       <div className="flex flex-col md:flex-row gap-6 items-stretch w-full max-w-5xl justify-center">
         <div className="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-zinc-200/50 overflow-hidden border border-zinc-100 shrink-0">
           <div className="p-8">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
-              <Clock size={24} />
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+                <Clock size={24} />
+              </div>
+              <h1 className="text-2xl font-semibold tracking-tight">Chrono Cours</h1>
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight">Chrono Cours</h1>
-          </div>
 
-          <AnimatePresence mode="wait">
-            {!isRunning ? (
-              <motion.div 
-                key="setup"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Heure de début</label>
-                    <input 
-                      type="time" 
-                      value={startTimeStr}
-                      onChange={(e) => setStartTimeStr(e.target.value)}
-                      className="w-full text-4xl font-light tracking-tight border-b-2 border-zinc-100 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Heure de fin</label>
-                    <input 
-                      type="time" 
-                      value={endTimeStr}
-                      onChange={(e) => setEndTimeStr(e.target.value)}
-                      className="w-full text-4xl font-light tracking-tight border-b-2 border-zinc-100 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
-                    />
-                  </div>
-                </div>
-
-                <button 
-                  onClick={handleStart}
-                  className="w-full py-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-2xl font-medium text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98] mt-8"
+            <AnimatePresence mode="wait">
+              {!isRunning ? (
+                <motion.div 
+                  key="setup"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-6"
                 >
-                  <Play size={20} fill="currentColor" />
-                  Démarrer le décompte
-                </button>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="timer"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col items-center"
-              >
-                <div className="relative w-72 h-72 flex items-center justify-center mb-8">
-                  {/* Background Circle */}
-                  <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                    <circle
-                      cx="144"
-                      cy="144"
-                      r={radius}
-                      stroke="currentColor"
-                      strokeWidth="8"
-                      fill="transparent"
-                      className="text-zinc-100"
-                    />
-                    {/* Progress Circle */}
-                    <circle
-                      cx="144"
-                      cy="144"
-                      r={radius}
-                      stroke="currentColor"
-                      strokeWidth="8"
-                      fill="transparent"
-                      strokeDasharray={circumference}
-                      strokeDashoffset={strokeDashoffset}
-                      strokeLinecap="round"
-                      className={`transition-all duration-300 ease-out ${isFinished ? 'text-emerald-500' : 'text-indigo-600'}`}
-                    />
-                  </svg>
-                  
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-sm font-medium text-zinc-400 uppercase tracking-widest mb-1">
-                      {isFinished ? 'Terminé' : 'Temps restant'}
-                    </span>
-                    {isFinished ? (
-                      <CheckCircle2 className="w-16 h-16 text-emerald-500 my-2" />
-                    ) : (
-                      <span className="text-5xl font-light tracking-tighter text-zinc-900 tabular-nums">
-                        {formatTime(remainingMs)}
-                      </span>
-                    )}
-                    <button 
-                      onClick={() => setPrecisionMode((prev) => (prev + 1) % 3)}
-                      className="text-lg font-medium text-zinc-500 mt-2 hover:text-zinc-700 transition-colors cursor-pointer select-none"
-                      title="Changer la précision"
-                    >
-                      {precisionMode === 0 
-                        ? progress.toFixed(1) 
-                        : precisionMode === 1 
-                          ? progress.toFixed(2) 
-                          : progress.toFixed(Math.max(0, Math.ceil(-Math.log10(150000 / (totalMs || 1)))))}%
-                    </button>
-                  </div>
-                </div>
-
-                <div className="w-full flex gap-4">
-                  <div className="flex-1 bg-zinc-50 rounded-2xl p-4 text-center border border-zinc-100">
-                    <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Début</div>
-                    <div className="text-xl font-medium text-zinc-700">{startTimeStr}</div>
-                  </div>
-                  <div className="flex-1 bg-zinc-50 rounded-2xl p-4 text-center border border-zinc-100">
-                    <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Fin</div>
-                    <div className="text-xl font-medium text-zinc-700">{endTimeStr}</div>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={handleStop}
-                  className="mt-8 w-full py-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 rounded-2xl font-medium text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                >
-                  <Settings2 size={20} />
-                  Modifier les horaires
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {isRunning && numBars > 0 && (
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-8 flex flex-col gap-6 w-full max-w-md shrink-0 overflow-y-auto"
-          >
-            {chunkedBars.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex gap-4 items-end flex-1 min-h-[120px]">
-                {row.map((bar) => (
-                  bar.isPlaceholder ? (
-                    <div key={bar.id} className="flex-1 shrink-0" />
-                  ) : (
-                    <div 
-                      key={bar.id} 
-                      className="flex-1 bg-zinc-100 rounded-full overflow-hidden relative flex flex-col justify-end shrink-0"
-                      style={{ height: `${bar.heightPercentage}%` }}
-                      title={`Quart d'heure ${Number(bar.id) + 1}`}
-                    >
-                      <div 
-                        className={`w-full transition-all duration-300 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500'}`}
-                        style={{ height: `${bar.fillPercentage}%` }}
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Heure de début</label>
+                      <input 
+                        type="time" 
+                        value={startTimeStr}
+                        onChange={(e) => setStartTimeStr(e.target.value)}
+                        className="w-full text-4xl font-light tracking-tight border-b-2 border-zinc-100 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
                       />
                     </div>
-                  )
-                ))}
-              </div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Heure de fin</label>
+                      <input 
+                        type="time" 
+                        value={endTimeStr}
+                        onChange={(e) => setEndTimeStr(e.target.value)}
+                        className="w-full text-4xl font-light tracking-tight border-b-2 border-zinc-100 pb-2 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={handleStart}
+                    className="w-full py-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-2xl font-medium text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98] mt-8"
+                  >
+                    <Play size={20} fill="currentColor" />
+                    Démarrer le décompte
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="timer"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col items-center"
+                >
+                  <div className="relative w-72 h-72 flex items-center justify-center mb-8">
+                    {/* Background Circle */}
+                    <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                      <circle
+                        cx="144"
+                        cy="144"
+                        r={radius}
+                        stroke="currentColor"
+                        strokeWidth="8"
+                        fill="transparent"
+                        className="text-zinc-100"
+                      />
+                      {/* Progress Circle */}
+                      <circle
+                        cx="144"
+                        cy="144"
+                        r={radius}
+                        stroke="currentColor"
+                        strokeWidth="8"
+                        fill="transparent"
+                        strokeDasharray={circumference}
+                        strokeDashoffset={strokeDashoffset}
+                        strokeLinecap="round"
+                        className={`transition-all duration-300 ease-out ${isFinished ? 'text-emerald-500' : 'text-indigo-600'}`}
+                      />
+                    </svg>
+                    
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                      <span className="text-sm font-medium text-zinc-400 uppercase tracking-widest mb-1">
+                        {isFinished ? 'Terminé' : 'Temps restant'}
+                      </span>
+                      {isFinished ? (
+                        <CheckCircle2 className="w-16 h-16 text-emerald-500 my-2" />
+                      ) : (
+                        <span className="text-5xl font-light tracking-tighter text-zinc-900 tabular-nums">
+                          {formatTime(remainingMs)}
+                        </span>
+                      )}
+                      <button 
+                        onClick={() => setPrecisionMode((prev) => (prev + 1) % 3)}
+                        className="text-lg font-medium text-zinc-500 mt-2 hover:text-zinc-700 transition-colors cursor-pointer select-none"
+                        title="Changer la précision"
+                      >
+                        {precisionMode === 0 
+                          ? progress.toFixed(1) 
+                          : precisionMode === 1 
+                            ? progress.toFixed(2) 
+                            : progress.toFixed(Math.max(0, Math.ceil(-Math.log10(150000 / (totalMs || 1)))))}%
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="w-full flex gap-4">
+                    <div className="flex-1 bg-zinc-50 rounded-2xl p-4 text-center border border-zinc-100">
+                      <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Début</div>
+                      <div className="text-xl font-medium text-zinc-700">{startTimeStr}</div>
+                    </div>
+                    <div className="flex-1 bg-zinc-50 rounded-2xl p-4 text-center border border-zinc-100">
+                      <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Fin</div>
+                      <div className="text-xl font-medium text-zinc-700">{endTimeStr}</div>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={handleStop}
+                    className="mt-8 w-full py-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 rounded-2xl font-medium text-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                  >
+                    <Settings2 size={20} />
+                    Modifier les horaires
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isRunning && numBars > 0 && (
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="bg-white rounded-3xl shadow-xl shadow-zinc-200/50 border border-zinc-100 p-8 flex flex-col gap-6 w-full max-w-md shrink-0 overflow-y-auto"
+            >
+              {chunkedBars.map((row, rowIndex) => (
+                <div key={rowIndex} className="flex gap-4 items-end flex-1 min-h-[120px]">
+                  {row.map((bar) => (
+                    bar.isPlaceholder ? (
+                      <div key={bar.id} className="flex-1 shrink-0" />
+                    ) : (
+                      <div 
+                        key={bar.id} 
+                        className="flex-1 bg-zinc-100 rounded-full overflow-hidden relative flex flex-col justify-end shrink-0"
+                        style={{ height: `${bar.heightPercentage}%` }}
+                        title={`Quart d'heure ${Number(bar.id) + 1}`}
+                      >
+                        <div 
+                          className={`w-full transition-all duration-300 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                          style={{ height: `${bar.fillPercentage}%` }}
+                        />
+                      </div>
+                    )
+                  ))}
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
-  </div>
-);
+  );
 }
