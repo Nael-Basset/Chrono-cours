@@ -144,10 +144,6 @@ export default function App() {
     }
   }
 
-  const radius = 120;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
-
   const QUARTER_HOUR_MS = 15 * 60 * 1000;
   const numBars = Math.ceil(totalMs / QUARTER_HOUR_MS);
   
@@ -330,13 +326,14 @@ export default function App() {
           </div>
         </div>
 
+        {/* Progress Bars Section */}
         <AnimatePresence>
           {isRunning && numBars > 0 && (
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-10 flex flex-col gap-4 md:gap-10 w-fit max-w-full h-full max-h-[500px] md:max-h-full overflow-y-auto no-scrollbar"
+              className="flex-1 bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-10 flex flex-col gap-4 md:gap-10 w-full max-w-full h-full max-h-[500px] md:max-h-full overflow-y-auto no-scrollbar"
             >
               <div className="flex flex-col gap-4 md:gap-10 h-full justify-center">
                 {chunkedBars.map((row, rowIndex) => (
@@ -344,7 +341,7 @@ export default function App() {
                     {row.map((bar) => (
                       <div 
                         key={bar.id} 
-                        className="w-10 md:w-16 h-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden relative flex flex-col justify-end flex-shrink-0 [--bar-r:20px] md:[--bar-r:32px]"
+                        className="flex-1 max-w-[40px] md:max-w-[64px] h-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden relative flex flex-col justify-end flex-shrink-1 [--bar-r:20px] md:[--bar-r:32px]"
                         title={`Quart d'heure ${Number(bar.id) + 1}${bar.maxFillPercentage < 100 ? ` (S'arrête à ${Math.round(bar.maxFillPercentage)}%)` : ''}`}
                       >
                         {/* Hatching for unreachable time */}
@@ -353,7 +350,7 @@ export default function App() {
                             className="absolute top-0 left-0 right-0 stripe-bg opacity-30 text-zinc-400 dark:text-zinc-500 overflow-hidden"
                             style={{ height: `calc(${100 - bar.maxFillPercentage}% + var(--bar-r))` }}
                           >
-                            {/* Concave cutter - Centered on the bottom edge to peak exactly at maxFillPercentage */}
+                            {/* Concave cutter - Centered on the bottom edge to peak exactly at maxFillPercentage with overlap fix */}
                             <div className="absolute bottom-0 left-0 w-full aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-full translate-y-[calc(50%-0.5px)]" />
                           </div>
                         )}
