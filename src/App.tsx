@@ -153,41 +153,33 @@ export default function App() {
   
   const bars = Array.from({ length: numBars }).map((_, i) => {
     const barStartMs = i * QUARTER_HOUR_MS;
-    const barEndMs = Math.min((i + 1) * QUARTER_HOUR_MS, totalMs);
-    const barDuration = barEndMs - barStartMs;
+    const barDuration = Math.min((i + 1) * QUARTER_HOUR_MS, totalMs) - barStartMs;
     const barElapsed = Math.max(0, Math.min(elapsedMs - barStartMs, barDuration));
-    const fillPercentage = (barElapsed / barDuration) * 100;
-    const heightPercentage = (barDuration / QUARTER_HOUR_MS) * 100;
+    
+    // Each bar represents 15 minutes, but the session may end before the bar is full
+    const fillPercentage = (barElapsed / QUARTER_HOUR_MS) * 100;
+    const maxFillPercentage = (barDuration / QUARTER_HOUR_MS) * 100;
     
     return {
       id: i,
       fillPercentage,
-      heightPercentage,
+      maxFillPercentage,
       isPlaceholder: false,
     };
   });
 
   const chunkedBars = [];
-  for (let i = 0; i < bars.length; i += 8) {
-    const chunk = bars.slice(i, i + 8);
-    if (numBars > 8 && chunk.length < 8) {
-      const padding = Array.from({ length: 8 - chunk.length }).map((_, j) => ({
-        id: `placeholder-${i + j}`,
-        fillPercentage: 0,
-        heightPercentage: 0,
-        isPlaceholder: true,
-      }));
-      chunkedBars.push([...chunk, ...padding]);
-    } else {
-      chunkedBars.push(chunk);
-    }
+  const ITEMS_PER_ROW = 8;
+
+  for (let i = 0; i < bars.length; i += ITEMS_PER_ROW) {
+    chunkedBars.push(bars.slice(i, i + ITEMS_PER_ROW));
   }
 
   return (
     <div className="h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100 overflow-hidden flex flex-col items-center justify-center p-4 md:p-12 transition-colors duration-300">
-      <div className="flex flex-col landscape:flex-row md:flex-row gap-6 md:gap-16 items-stretch justify-center w-full h-full max-w-[1400px] mx-auto">
+      <div className="flex flex-col landscape:flex-row md:flex-row gap-6 md:gap-16 items-center landscape:items-stretch md:items-stretch justify-center w-full h-full max-w-[1400px] mx-auto overflow-y-auto no-scrollbar">
         {/* Main Card */}
-        <div className="flex-1 max-w-md md:max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto no-scrollbar relative flex flex-col justify-center">
+        <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:max-h-full landscape:overflow-y-auto no-scrollbar relative flex flex-col justify-center">
           {/* Controls: Dark Mode & Fullscreen */}
           <div className="absolute top-2 right-2 md:top-6 md:right-6 flex gap-1.5 md:gap-3 z-10">
             <button
@@ -338,33 +330,40 @@ export default function App() {
           </div>
         </div>
 
-        {/* Progress Bars Section */}
         <AnimatePresence>
           {isRunning && numBars > 0 && (
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="flex-1 bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-12 flex flex-col gap-4 md:gap-10 w-full max-w-md md:max-w-3xl h-full max-h-[500px] md:max-h-full overflow-y-auto no-scrollbar"
+              className="bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none border border-zinc-100 dark:border-zinc-800 p-6 md:p-10 flex flex-col gap-4 md:gap-10 w-fit max-w-full h-full max-h-[500px] md:max-h-full overflow-y-auto no-scrollbar"
             >
               <div className="flex flex-col gap-4 md:gap-10 h-full justify-center">
                 {chunkedBars.map((row, rowIndex) => (
-                  <div key={rowIndex} className="flex gap-3 md:gap-6 items-end flex-1 min-h-0">
+                  <div key={rowIndex} className="flex gap-4 md:gap-8 items-end justify-center h-full min-h-0">
                     {row.map((bar) => (
-                      bar.isPlaceholder ? (
-                        <div key={bar.id} className="flex-1" />
-                      ) : (
-                        <div 
-                          key={bar.id} 
-                          className="flex-1 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden relative flex flex-col justify-end h-full"
-                          title={`Quart d'heure ${Number(bar.id) + 1}`}
-                        >
+                      <div 
+                        key={bar.id} 
+                        className="w-10 md:w-16 h-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden relative flex flex-col justify-end flex-shrink-0 [--bar-r:20px] md:[--bar-r:32px]"
+                        title={`Quart d'heure ${Number(bar.id) + 1}${bar.maxFillPercentage < 100 ? ` (S'arrête à ${Math.round(bar.maxFillPercentage)}%)` : ''}`}
+                      >
+                        {/* Hatching for unreachable time */}
+                        {bar.maxFillPercentage < 100 && (
                           <div 
-                            className={`w-full transition-all duration-500 ease-out rounded-full ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500 dark:bg-indigo-400'}`}
-                            style={{ height: `${bar.fillPercentage}%` }}
-                          />
-                        </div>
-                      )
+                            className="absolute top-0 left-0 right-0 stripe-bg opacity-30 text-zinc-400 dark:text-zinc-500 overflow-hidden"
+                            style={{ height: `calc(${100 - bar.maxFillPercentage}% + var(--bar-r))` }}
+                          >
+                            {/* Concave cutter - Centered on the bottom edge to peak exactly at maxFillPercentage */}
+                            <div className="absolute bottom-0 left-0 w-full aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-full translate-y-[calc(50%-0.5px)]" />
+                          </div>
+                        )}
+                        
+                        {/* Progress bar */}
+                        <div 
+                          className={`w-full transition-all duration-500 ease-out rounded-full relative z-10 ${isFinished ? 'bg-emerald-500' : 'bg-indigo-500 dark:bg-indigo-400'}`}
+                          style={{ height: `${bar.fillPercentage}%` }}
+                        />
+                      </div>
                     ))}
                   </div>
                 ))}

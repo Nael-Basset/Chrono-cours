@@ -12,11 +12,13 @@ Ce document est destiné à un agent IA ou un développeur souhaitant reprendre 
 - **Animations :** `motion/react` (anciennement Framer Motion)
 - **Icônes :** `lucide-react`
 - **Déploiement :** GitHub Actions -> GitHub Pages
+- **Dépendances préparatoires (présentes dans `package.json` mais non utilisées dans le front-end) :** `@google/genai`, `express`, `better-sqlite3`, `dotenv` (Suggère une évolution future vers un backend ou l'intégration d'IA).
 
 ## 3. Architecture et Fichiers Clés
-- `src/App.tsx` : Contient l'intégralité de la logique et de l'interface (446 lignes).
+- `src/App.tsx` : Contient l'intégralité de la logique et de l'interface (environ 340 lignes).
 - `src/index.css` : Configuration Tailwind v4 et utilitaires personnalisés (ex: `.no-scrollbar`).
-- `.github/workflows/deploy.yml` : Workflow CI/CD pour le déploiement automatique.
+- `package.json` : Contient les dépendances, y compris celles prêtes pour un éventuel futur backend.
+- `.github/workflows/deploy.yml` : Workflow CI/CD pour le déploiement automatique sur GitHub Pages.
 
 ## 4. Fonctionnalités Clés & Logique
 
@@ -50,7 +52,7 @@ Au montage (`useEffect`), l'application pré-remplit les heures de début et de 
 - **État :** Utilisation intensive de `useState` et `useEffect` pour le rafraîchissement du timer (tous les 100ms en cours d'exécution).
 
 ## 6. Commandes Utiles
-- `npm run dev` : Lancement local.
+- `npm run dev` : Lancement local sur le port 3000 (accessible sur le réseau local via `--host=0.0.0.0`).
 - `npm run build` : Build de production (génère `/dist`).
 - `npm run lint` : Vérification du typage TypeScript.
 

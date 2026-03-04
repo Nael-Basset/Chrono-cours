@@ -8,3 +8,13 @@
     display: none;
   }
 }
+
+@utility stripe-bg {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    currentColor,
+    currentColor 1.5px,
+    transparent 1.5px,
+    transparent 6px
+  );
+}
