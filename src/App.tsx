@@ -175,9 +175,9 @@ export default function App() {
     <div className="h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100 overflow-hidden flex flex-col items-center justify-center p-4 md:p-12 transition-colors duration-300">
       <div className="flex flex-col landscape:flex-row md:flex-row gap-6 md:gap-16 items-center landscape:items-stretch md:items-stretch justify-center w-full h-full max-w-[1400px] mx-auto overflow-y-auto no-scrollbar">
         {/* Main Card */}
-        <div className="w-full max-w-md landscape:max-w-sm bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:h-full relative flex flex-col justify-center">
+        <div className="w-full max-w-md landscape:max-w-sm md:landscape:max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-xl shadow-zinc-200/50 dark:shadow-none overflow-hidden border border-zinc-100 dark:border-zinc-800 shrink-0 landscape:h-full md:landscape:h-auto relative flex flex-col justify-center">
           {/* Controls: Dark Mode & Fullscreen */}
-          <div className="absolute top-2 right-2 md:top-6 md:right-6 flex gap-1.5 md:gap-3 z-10 landscape:top-2 landscape:right-2">
+          <div className="absolute top-2 right-2 md:top-6 md:right-6 flex gap-1.5 md:gap-3 z-10 landscape:top-2 landscape:right-2 md:landscape:top-6 md:landscape:right-6">
             <button
               onClick={toggleFullscreen}
               className="md:hidden p-1.5 md:p-3 rounded-lg md:rounded-2xl bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 active:scale-95 transition-all border border-zinc-100 dark:border-zinc-700"
@@ -194,12 +194,12 @@ export default function App() {
             </button>
           </div>
 
-          <div className="p-6 md:p-12 landscape:p-4">
-            <div className="flex items-center justify-center gap-3 md:gap-4 mb-6 md:mb-12 landscape:mb-4">
-              <div className="w-10 h-10 md:w-14 md:h-14 landscape:w-8 landscape:h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                <Clock size={24} className="md:w-8 md:h-8 landscape:w-5 landscape:h-5" />
+          <div className="p-6 md:p-12 landscape:p-4 md:landscape:p-12">
+            <div className="flex items-center justify-center gap-3 md:gap-4 mb-6 md:mb-12 landscape:mb-4 md:landscape:mb-12">
+              <div className="w-10 h-10 md:w-14 md:h-14 landscape:w-8 landscape:h-8 md:landscape:w-14 md:landscape:h-14 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <Clock size={24} className="md:w-8 md:h-8 landscape:w-5 landscape:h-5 md:landscape:w-8 md:landscape:h-8" />
               </div>
-              <h1 className="text-xl md:text-4xl landscape:text-lg font-semibold tracking-tight">Chrono Cours</h1>
+              <h1 className="text-xl md:text-4xl landscape:text-lg md:landscape:text-4xl font-semibold tracking-tight">Chrono Cours</h1>
             </div>
 
             <AnimatePresence mode="wait">
@@ -210,35 +210,35 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-4 md:space-y-10 landscape:space-y-3"
+                  className="space-y-4 md:space-y-10 landscape:space-y-3 md:landscape:space-y-10"
                 >
-                  <div className="space-y-4 md:space-y-10 landscape:space-y-3">
-                    <div className="space-y-2 md:space-y-4 landscape:space-y-1">
+                  <div className="space-y-4 md:space-y-10 landscape:space-y-3 md:landscape:space-y-10">
+                    <div className="space-y-2 md:space-y-4 landscape:space-y-1 md:landscape:space-y-4">
                       <label className="text-xs md:text-sm font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Heure de début</label>
                       <input 
                         type="time" 
                         value={startTimeStr}
                         onChange={(e) => setStartTimeStr(e.target.value)}
-                        className="w-full text-3xl md:text-6xl landscape:text-2xl font-light tracking-tight border-b-2 border-zinc-100 dark:border-zinc-800 pb-2 md:pb-4 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
+                        className="w-full text-3xl md:text-6xl landscape:text-2xl md:landscape:text-6xl font-light tracking-tight border-b-2 border-zinc-100 dark:border-zinc-800 pb-2 md:pb-4 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
                       />
                     </div>
                     
-                    <div className="space-y-2 md:space-y-4 landscape:space-y-1">
+                    <div className="space-y-2 md:space-y-4 landscape:space-y-1 md:landscape:space-y-4">
                       <label className="text-xs md:text-sm font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Heure de fin</label>
                       <input 
                         type="time" 
                         value={endTimeStr}
                         onChange={(e) => setEndTimeStr(e.target.value)}
-                        className="w-full text-3xl md:text-6xl landscape:text-2xl font-light tracking-tight border-b-2 border-zinc-100 dark:border-zinc-800 pb-2 md:pb-4 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
+                        className="w-full text-3xl md:text-6xl landscape:text-2xl md:landscape:text-6xl font-light tracking-tight border-b-2 border-zinc-100 dark:border-zinc-800 pb-2 md:pb-4 focus:border-indigo-500 focus:outline-none transition-colors bg-transparent"
                       />
                     </div>
                   </div>
 
                   <button 
                     onClick={handleStart}
-                    className="w-full py-3 md:py-6 landscape:py-2 bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white rounded-2xl md:rounded-3xl font-medium text-lg md:text-2xl landscape:text-base transition-all flex items-center justify-center gap-2 md:gap-4 active:scale-[0.98] mt-4 md:mt-12 landscape:mt-2"
+                    className="w-full py-3 md:py-6 landscape:py-2 md:landscape:py-6 bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white rounded-2xl md:rounded-3xl font-medium text-lg md:text-2xl landscape:text-base md:landscape:text-2xl transition-all flex items-center justify-center gap-2 md:gap-4 active:scale-[0.98] mt-4 md:mt-12 landscape:mt-2 md:landscape:mt-12"
                   >
-                    <Play size={20} className="md:w-8 md:h-8 landscape:w-4 landscape:h-4" fill="currentColor" />
+                    <Play size={20} className="md:w-8 md:h-8 landscape:w-4 landscape:h-4 md:landscape:w-8 md:landscape:h-8" fill="currentColor" />
                     Démarrer
                   </button>
                 </motion.div>
@@ -251,7 +251,7 @@ export default function App() {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col items-center"
                 >
-                  <div className="relative w-48 h-48 md:w-80 md:h-80 landscape:w-32 landscape:h-32 flex items-center justify-center mb-6 md:mb-12 landscape:mb-2">
+                  <div className="relative w-48 h-48 md:w-80 md:h-80 landscape:w-32 landscape:h-32 md:landscape:w-80 md:landscape:h-80 flex items-center justify-center mb-6 md:mb-12 landscape:mb-2 md:landscape:mb-12">
                     {/* Background Circle */}
                     <svg className="absolute inset-0 w-full h-full transform -rotate-90">
                       <circle
@@ -278,20 +278,20 @@ export default function App() {
                       />
                     </svg>
                     
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 landscape:p-1">
-                      <span className="text-[10px] md:text-sm landscape:text-[8px] font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1 landscape:mb-0">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 landscape:p-1 md:landscape:p-4">
+                      <span className="text-[10px] md:text-sm landscape:text-[8px] md:landscape:text-sm font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1 landscape:mb-0 md:landscape:mb-1">
                         {isFinished ? 'Terminé' : 'Restant'}
                       </span>
                       {isFinished ? (
-                        <CheckCircle2 className="w-10 h-10 md:w-24 md:h-24 landscape:w-8 landscape:h-8 text-emerald-500 my-1 md:my-4 landscape:my-1" />
+                        <CheckCircle2 className="w-10 h-10 md:w-24 md:h-24 landscape:w-8 landscape:h-8 md:landscape:w-24 md:landscape:h-24 text-emerald-500 my-1 md:my-4 landscape:my-1 md:landscape:my-4" />
                       ) : (
-                        <span className="text-3xl md:text-7xl landscape:text-2xl font-light tracking-tighter text-zinc-900 dark:text-zinc-100 tabular-nums">
+                        <span className="text-3xl md:text-7xl landscape:text-2xl md:landscape:text-7xl font-light tracking-tighter text-zinc-900 dark:text-zinc-100 tabular-nums">
                           {formatTime(remainingMs)}
                         </span>
                       )}
                       <button 
                         onClick={() => setPrecisionMode((prev) => (prev + 1) % 3)}
-                        className="text-sm md:text-2xl landscape:text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-1 md:mt-4 landscape:mt-0 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors cursor-pointer select-none"
+                        className="text-sm md:text-2xl landscape:text-xs md:landscape:text-2xl font-medium text-zinc-500 dark:text-zinc-400 mt-1 md:mt-4 landscape:mt-0 md:landscape:mt-4 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors cursor-pointer select-none"
                       >
                         {precisionMode === 0 
                           ? progress.toFixed(1) 
@@ -302,22 +302,22 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="w-full flex gap-3 md:gap-6 landscape:gap-2">
-                    <div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl md:rounded-3xl p-3 md:p-6 landscape:p-2 text-center border border-zinc-100 dark:border-zinc-800">
-                      <div className="text-[10px] md:text-sm landscape:text-[8px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1 md:mb-2 landscape:mb-0">Début</div>
-                      <div className="text-lg md:text-3xl landscape:text-sm font-medium text-zinc-700 dark:text-zinc-300">{startTimeStr}</div>
+                  <div className="w-full flex gap-3 md:gap-6 landscape:gap-2 md:landscape:gap-6">
+                    <div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl md:rounded-3xl p-3 md:p-6 landscape:p-2 md:landscape:p-6 text-center border border-zinc-100 dark:border-zinc-800">
+                      <div className="text-[10px] md:text-sm landscape:text-[8px] md:landscape:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1 md:mb-2 landscape:mb-0 md:landscape:mb-2">Début</div>
+                      <div className="text-lg md:text-3xl landscape:text-sm md:landscape:text-3xl font-medium text-zinc-700 dark:text-zinc-300">{startTimeStr}</div>
                     </div>
-                    <div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl md:rounded-3xl p-3 md:p-6 landscape:p-2 text-center border border-zinc-100 dark:border-zinc-800">
-                      <div className="text-[10px] md:text-sm landscape:text-[8px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1 md:mb-2 landscape:mb-0">Fin</div>
-                      <div className="text-lg md:text-3xl landscape:text-sm font-medium text-zinc-700 dark:text-zinc-300">{endTimeStr}</div>
+                    <div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl md:rounded-3xl p-3 md:p-6 landscape:p-2 md:landscape:p-6 text-center border border-zinc-100 dark:border-zinc-800">
+                      <div className="text-[10px] md:text-sm landscape:text-[8px] md:landscape:text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1 md:mb-2 landscape:mb-0 md:landscape:mb-2">Fin</div>
+                      <div className="text-lg md:text-3xl landscape:text-sm md:landscape:text-3xl font-medium text-zinc-700 dark:text-zinc-300">{endTimeStr}</div>
                     </div>
                   </div>
 
                   <button 
                     onClick={handleStop}
-                    className="mt-6 md:mt-12 landscape:mt-2 w-full py-3 md:py-5 landscape:py-1 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-xl md:rounded-3xl font-medium text-base md:text-xl landscape:text-xs transition-all flex items-center justify-center gap-2 md:gap-3 active:scale-[0.98]"
+                    className="mt-6 md:mt-12 landscape:mt-2 md:landscape:mt-12 w-full py-3 md:py-5 landscape:py-1 md:landscape:py-5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-xl md:rounded-3xl font-medium text-base md:text-xl landscape:text-xs md:landscape:text-xl transition-all flex items-center justify-center gap-2 md:gap-3 active:scale-[0.98]"
                   >
-                    <Settings2 size={18} className="md:w-6 md:h-6 landscape:w-3 landscape:h-3" />
+                    <Settings2 size={18} className="md:w-6 md:h-6 landscape:w-3 landscape:h-3 md:landscape:w-6 md:landscape:h-6" />
                     Modifier les horaires
                   </button>
                 </motion.div>
